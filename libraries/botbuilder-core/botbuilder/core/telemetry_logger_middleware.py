@@ -308,8 +308,8 @@ class TelemetryLoggerMiddleware(Middleware):
             print(teams_channel_data)
 
             properties["TeamsTenantId"] = (
-                teams_channel_data.tenant
-                if teams_channel_data and teams_channel_data.tenant
+                teams_channel_data['tenant']['id']
+                if teams_channel_data and teams_channel_data.get("tenant", {}).get("id", None)
                 else ""
             )
 
@@ -317,7 +317,7 @@ class TelemetryLoggerMiddleware(Middleware):
                 activity.from_property.aad_object_id if activity.from_property else ""
             )
 
-            if teams_channel_data and teams_channel_data.team:
+            if teams_channel_data and teams_channel_data.get("team", None):
                 properties["TeamsTeamInfo"] = TeamInfo.serialize(
-                    teams_channel_data.team
+                    teams_channel_data['team']
                 )
